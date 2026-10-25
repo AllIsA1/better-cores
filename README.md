@@ -8,6 +8,7 @@ A plugin for the [LucX-UI](https://github.com/AlexeyLCP/lucx-ui) plugin system: 
   is the program in the panel, is it running (the panel's own `/tunnel/<core>/status`).
 - The last release of the project each core comes from (GitHub's public releases API, looked up in the background at most once an
   hour, so the page never waits for GitHub).
+- It has **no page and no sidebar entry** (0.1.1): the plan is to extend the panel's own Cores page with its versions and extra buttons, not to add a menu.
 - Updating cores from here is **not built yet**. The panel takes a core only as a ready file with its sha256, while most projects
   publish archives or Android packages (or no release at all); the plan for each core is still open.
 
@@ -17,7 +18,7 @@ Better Cores is installed and turned on, and refuses to turn Better Cores off or
 ## Permissions
 
 `api:cores:read` (status of the cores other than OpenFlux; read only, no download, upload or logs), `api:openflux:read` (the same for
-OpenFlux), `network` (GitHub's releases API, nothing else), `ui:menu` (the page).
+OpenFlux), `network` (GitHub's releases API, nothing else).
 
 ## Build
 

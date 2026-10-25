@@ -1,9 +1,9 @@
 {
   "id": "better-cores",
   "name": "Better Cores",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "apiVersion": "1",
-  "description": "The tunnel cores of the panel at a glance: which are installed and running, and the last release of each project. The base other plugins (Better OpenFlux) build on; updating cores from here comes next.",
+  "description": "The tunnel cores of the panel at a glance: which are installed and running, and the last release of each project. No page of its own; the base other plugins (Better OpenFlux) build on, and what the panel's Cores page will be extended with.",
   "author": "AllIsA1",
   "license": "MIT",
   "type": "process",
@@ -14,16 +14,6 @@
   "permissions": [
     "api:cores:read",
     "api:openflux:read",
-    "network",
-    "ui:menu"
-  ],
-  "ui": {
-    "menu": [
-      {
-        "title": "Better Cores",
-        "icon": "cloud-sync",
-        "path": "/ui/index.html"
-      }
-    ]
-  }
+    "network"
+  ]
 }

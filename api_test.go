@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestTheStatusCallAndThePageAreServed(t *testing.T) {
+func TestTheStatusCallIsServedAndThereIsNoPage(t *testing.T) {
 	r, _, _ := rig()
 	srv := httptest.NewServer(newMux(r))
 	defer srv.Close()
@@ -23,15 +23,7 @@ func TestTheStatusCallAndThePageAreServed(t *testing.T) {
 	if resp.StatusCode != 200 || json.NewDecoder(resp.Body).Decode(&list) != nil || len(list) != len(cores) {
 		t.Fatalf("status = %d, %d cores", resp.StatusCode, len(list))
 	}
-	page, err := http.Get(srv.URL + "/ui/index.html")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer page.Body.Close()
-	if page.StatusCode != 200 || page.Header.Get("Content-Type") == "" {
-		t.Errorf("page = %d %q", page.StatusCode, page.Header.Get("Content-Type"))
-	}
-	for _, bad := range []string{"/api/install", "/ui/../go.mod", "/ui/secret"} {
+	for _, bad := range []string{"/api/install", "/ui/index.html", "/ui/../go.mod"} {
 		resp, err := http.Get(srv.URL + bad)
 		if err != nil {
 			t.Fatal(err)
