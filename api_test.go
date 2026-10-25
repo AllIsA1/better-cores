@@ -1,0 +1,44 @@
+// Copyright (c) 2026 AllIsA1.
+// SPDX-License-Identifier: MIT
+
+package main
+
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+)
+
+func TestTheStatusCallAndThePageAreServed(t *testing.T) {
+	r, _, _ := rig()
+	srv := httptest.NewServer(newMux(r))
+	defer srv.Close()
+	resp, err := http.Get(srv.URL + "/api/status")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	var list []coreStatus
+	if resp.StatusCode != 200 || json.NewDecoder(resp.Body).Decode(&list) != nil || len(list) != len(cores) {
+		t.Fatalf("status = %d, %d cores", resp.StatusCode, len(list))
+	}
+	page, err := http.Get(srv.URL + "/ui/index.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer page.Body.Close()
+	if page.StatusCode != 200 || page.Header.Get("Content-Type") == "" {
+		t.Errorf("page = %d %q", page.StatusCode, page.Header.Get("Content-Type"))
+	}
+	for _, bad := range []string{"/api/install", "/ui/../go.mod", "/ui/secret"} {
+		resp, err := http.Get(srv.URL + bad)
+		if err != nil {
+			t.Fatal(err)
+		}
+		resp.Body.Close()
+		if resp.StatusCode == 200 {
+			t.Errorf("%s answered 200", bad)
+		}
+	}
+}
