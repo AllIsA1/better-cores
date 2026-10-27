@@ -30,7 +30,7 @@ var cores = []core{
 	{"naive", "NaiveProxy", "klzgrad/naiveproxy"},
 	{"anytls", "AnyTLS", "anytls/anytls-go"},
 	{"mtproxy", "MTProxy", "9seconds/mtg"},
-	{"olcrtc", "olcRTC", "openlibrecommunity/olcrtc"},
+	{"olcrtc", "olcRTC", "ghostlane-project/olcrtc"}, // the fork Better olcRTC installs,
 	{"qwdtt", "qWDTT", ""},
 	{"tproxy", "Telegram WEB proxy", ""},
 }

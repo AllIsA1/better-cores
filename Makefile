@@ -9,7 +9,7 @@ ARCHES := amd64 arm64
 build:
 	@for arch in $(ARCHES); do \
 		echo "building bin/$$arch/$(NAME)"; \
-		CGO_ENABLED=0 GOOS=linux GOARCH=$$arch go build -trimpath -ldflags "-s -w" -o bin/$$arch/$(NAME) . || exit 1; \
+		CGO_ENABLED=0 GOOS=linux GOARCH=$$arch go build -trimpath -buildvcs=false -ldflags "-s -w" -o bin/$$arch/$(NAME) . || exit 1; \
 	done
 
 test:
