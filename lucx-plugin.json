@@ -1,9 +1,9 @@
 {
   "id": "better-cores",
   "name": "Better Cores",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "apiVersion": "1",
-  "description": "The tunnel cores of the panel at a glance (which are installed and running, the last release of each project) and the WARP engine other plugins build on: an AmneziaWG client in the plugin that checks a Cloudflare WARP account and endpoint through a real tunnel and scans Cloudflare's endpoints for the quickest. The plugins that build on it (Better WARP, Better OpenFlux, Better olcRTC) require it.",
+  "description": "The WARP engine other plugins build on: an AmneziaWG client in the plugin that checks a Cloudflare WARP account and endpoint through a real tunnel and scans Cloudflare's endpoints for the quickest. It has no page; Better WARP requires it. (The cores overview it used to have is gone: the panel's Cores page shows the cores.)",
   "author": "AllIsA1",
   "license": "MIT",
   "type": "process",
@@ -12,8 +12,6 @@
     "command": "bin/${arch}/bettercores"
   },
   "permissions": [
-    "api:cores:read",
-    "api:openflux:read",
     "network"
   ]
 }

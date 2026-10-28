@@ -1,8 +1,8 @@
 # better-cores
 
-A plugin for the [LucX-UI](https://github.com/AlexeyLCP/lucx-ui) plugin system: the tunnel **cores** of the panel at a glance.
+A plugin for the [LucX-UI](https://github.com/AlexeyLCP/lucx-ui) plugin system: the engine that **Better WARP** builds on.
 
-## The WARP engine (0.2.0)
+## The WARP engine
 
 Better Cores carries the engine Better WARP needs: an AmneziaWG client **inside the plugin** (the userspace `amneziawg-go` with its own network
 stack; it touches no interface and no route of the machine). It offers two things to a plugin that requires it and holds `peer:better-cores`
@@ -21,24 +21,18 @@ Cloudflare's WARP ranges (`162.159.192/193/195.0/24`, `188.114.96-99.0/24`, `260
 ports WARP endpoints use, so it cannot be turned into a general scanner. What it measures is what **this machine** sees: the quickest endpoint for the
 server is not always the quickest for a client far from it.
 
-## Cores at a glance (0.1.x)
+## What it no longer does (0.3.0)
 
-- One row per core of the panel (OpenFlux, CSQTT, mieru, TrustTunnel, NaiveProxy, AnyTLS, MTProxy, olcRTC, qWDTT, Telegram WEB proxy):
-  is the program in the panel, is it running (the panel's own `/tunnel/<core>/status`).
-- The last release of the project each core comes from (olcRTC: the [ghostlane-project fork](https://github.com/ghostlane-project/olcrtc) that Better olcRTC
-  installs, not the original; GitHub's public releases API, looked up in the background at most once an
-  hour, so the page never waits for GitHub).
-- It has **no page and no sidebar entry** (0.1.1): the plan is to extend the panel's own Cores page with its versions and extra buttons, not to add a menu.
-- Updating cores from here is **not built yet**. The panel takes a core only as a ready file with its sha256, while most projects
-  publish archives or Android packages (or no release at all); the plan for each core is still open.
+Up to 0.2.0 the plugin also listed the tunnel cores of the panel with the last upstream release of each. Nothing used that list (the plugin has no
+page, and the panel's own Cores page shows the cores), and Better OpenFlux and Better olcRTC, which required this plugin, have nothing left to do since the panel
+brings OpenFlux v0.13.0 and the olcRTC fork itself (lucx.325/326). So the list, the GitHub lookup and the permissions it needed are gone.
 
-Other plugins build on this one: Better OpenFlux and Better olcRTC declare `"requires": ["better-cores"]`, so the plugin system installs
-them only when Better Cores is installed and turned on, and refuses to turn Better Cores off or remove it while one of them needs it.
+The plugin has **no page and no sidebar entry**. Better WARP declares `"requires": ["better-cores"]`: the plugin system installs it only when Better Cores is installed and turned
+on, and refuses to turn Better Cores off or remove it while Better WARP needs it.
 
 ## Permissions
 
-`api:cores:read` (status of the cores other than OpenFlux; read only, no download, upload or logs), `api:openflux:read` (the same for
-OpenFlux), `network` (GitHub's releases API, and the WARP engine's packets to Cloudflare).
+`network` (the WARP engine's packets to Cloudflare, nothing else).
 
 ## Build
 

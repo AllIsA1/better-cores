@@ -38,8 +38,7 @@ func peerCall(t *testing.T, srv *httptest.Server, method, path, body, caller str
 }
 
 func TestPeerAPIIsOnlyForCallersTheHostNamed(t *testing.T) {
-	r, _, _ := rig()
-	srv := httptest.NewServer(newMux(r, newJobBoard()))
+	srv := httptest.NewServer(newMux(newJobBoard()))
 	defer srv.Close()
 	if code, _ := peerCall(t, srv, http.MethodGet, "/peer/warp/info", "", ""); code != http.StatusForbidden {
 		t.Errorf("a call without X-LucX-Caller: %d, want 403", code)
@@ -55,9 +54,8 @@ func TestPeerAPIIsOnlyForCallersTheHostNamed(t *testing.T) {
 }
 
 func TestPeerAPIRefusesBadRequestsBeforeStartingAnything(t *testing.T) {
-	r, _, _ := rig()
 	board := newJobBoard()
-	srv := httptest.NewServer(newMux(r, board))
+	srv := httptest.NewServer(newMux(board))
 	defer srv.Close()
 	priv, pub := newKey(t)
 	acct := `{"privateKey":"` + b64(priv) + `","peerPublicKey":"` + b64(pub) + `","address":["172.16.0.2/32"]}`
