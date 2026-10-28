@@ -17,7 +17,7 @@ func main() {
 		api = p
 	}
 	log.Print("better-cores plugin ready")
-	if err := Serve(newMux(newReporter(api, newGithub()))); err != nil {
+	if err := Serve(newMux(newReporter(api, newGithub()), newJobBoard())); err != nil {
 		log.Fatal(err)
 	}
 }

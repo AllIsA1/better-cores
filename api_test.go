@@ -12,7 +12,7 @@ import (
 
 func TestTheStatusCallIsServedAndThereIsNoPage(t *testing.T) {
 	r, _, _ := rig()
-	srv := httptest.NewServer(newMux(r))
+	srv := httptest.NewServer(newMux(r, newJobBoard()))
 	defer srv.Close()
 	resp, err := http.Get(srv.URL + "/api/status")
 	if err != nil {

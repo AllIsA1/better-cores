@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-// newMux serves the page and the calls it makes. The panel's page bridge only reaches /api/...
-func newMux(r *reporter) http.Handler {
+// newMux serves the calls of the panel's page bridge (/api/...) and of the plugins that require this one (/peer/...).
+func newMux(r *reporter, board *jobBoard) http.Handler {
 	inner := http.NewServeMux()
 	inner.HandleFunc("GET /status", func(w http.ResponseWriter, req *http.Request) {
 		ctx, cancel := context.WithTimeout(req.Context(), 20*time.Second)
@@ -20,6 +20,7 @@ func newMux(r *reporter) http.Handler {
 	})
 	mux := http.NewServeMux()
 	mux.Handle("/api/", http.StripPrefix("/api", inner))
+	mux.Handle("/peer/", peerOnly(http.StripPrefix("/peer", newPeerMux(board))))
 	return mux
 }
 
