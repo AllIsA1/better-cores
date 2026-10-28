@@ -1,6 +1,7 @@
 # better-cores
 
-A plugin for the [LucX-UI](https://github.com/AlexeyLCP/lucx-ui) plugin system: the engine that **Better WARP** builds on.
+A plugin for the [LucX-UI](https://github.com/AlexeyLCP/lucx-ui) plugin system: it keeps the panel's tunnel cores up to date from the panel's own Cores page, and it is the
+engine that **Better WARP** builds on.
 
 ## The WARP engine
 
@@ -21,18 +22,40 @@ Cloudflare's WARP ranges (`162.159.192/193/195.0/24`, `188.114.96-99.0/24`, `260
 ports WARP endpoints use, so it cannot be turned into a general scanner. What it measures is what **this machine** sees: the quickest endpoint for the
 server is not always the quickest for a client far from it.
 
-## What it no longer does (0.3.0)
+## Core updates (0.4.0)
 
-Up to 0.2.0 the plugin also listed the tunnel cores of the panel with the last upstream release of each. Nothing used that list (the plugin has no
-page, and the panel's own Cores page shows the cores), and Better OpenFlux and Better olcRTC, which required this plugin, have nothing left to do since the panel
-brings OpenFlux v0.13.0 and the olcRTC fork itself (lucx.325/326). So the list, the GitHub lookup and the permissions it needed are gone.
+The plugin keeps the tunnel cores of the panel up to date, **inside the panel's own Settings → Cores page** (the page has the plugin's card and, in the
+card of each core, its line; the plugin has no page and no sidebar entry of its own).
 
-The plugin has **no page and no sidebar entry**. Better WARP declares `"requires": ["better-cores"]`: the plugin system installs it only when Better Cores is installed and turned
-on, and refuses to turn Better Cores off or remove it while Better WARP needs it.
+- **A look at the releases once a day**, and when you press *Check now*. It reads the last release of each project from GitHub; the time of the last look and
+  of the next one are on the page. The look is kept across restarts, so a restart does not make it start over; a look that reached nobody is tried again in an hour.
+- **Nothing is installed by itself.** A core with a release you have not installed shows *Install* / *Update to …*; the panel's copy stays until you press it.
+- **An installed release replaces the panel's copy.** The plugin asks the panel to download the release file; the panel only accepts it if its SHA-256 is
+  the one the plugin names (taken from the project's checksum file and from the digest GitHub computed for the file; if both exist they must agree, and a
+  release with neither is refused), unpacks the archive, checks it is an ELF program, puts it in place of its own copy and restarts the core's running instances.
+- **A panel update brings its own copy of every core**, so after one the plugin puts **the same release back** (never a newer one) within ten minutes.
+
+| Core | Project | What is installed |
+|---|---|---|
+| OpenFlux | p1neappleXpress/OpenFlux | `openflux-linux-<arch>` |
+| mieru | enfein/mieru | `mita` from `mita_<version>_linux_<arch>.tar.gz` |
+| TrustTunnel | TrustTunnel/TrustTunnel | `trusttunnel_endpoint` from `trusttunnel-<tag>-linux-<cpu>.tar.gz` |
+
+The other cores are not here on purpose: NaiveProxy's Caddy, AnyTLS (which needs the panel's `-cert`/`-key` patch), qWDTT and the Telegram proxy are builds of the
+panel's own, olcRTC's fork and CSQTT publish no Linux program, so a release of the project is not a drop-in for them. The mieru and TrustTunnel *clients* the
+panel keeps for outbound use are not touched either (the panel has no download for them).
+
+Better WARP declares `"requires": ["better-cores"]`: the plugin system installs it only when Better Cores is installed and turned on, and refuses to turn
+Better Cores off or remove it while Better WARP needs it.
+
+The page reads the plugin through the plugin system (`/panel/api/plugins/x/better-cores/api/cores`), so it needs the panel build that has the Cores card
+(`…-plugins.N` from lucx.329-plugins.2 on); on an older panel the plugin works but shows nothing.
 
 ## Permissions
 
-`network` (the WARP engine's packets to Cloudflare, nothing else).
+- `network`: the WARP engine's packets to Cloudflare, and GitHub for the releases of the cores.
+- `api:cores:write` (plugin system **host-11**): the panel's download of OpenFlux, mieru and TrustTunnel (`POST /tunnel/<core>/download`), nothing else of the cores.
+- `api:server:read`: the panel's version, to see that a panel update has happened.
 
 ## Build
 

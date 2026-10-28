@@ -10,7 +10,7 @@ import (
 )
 
 func TestOnlyThePeerCallsAreServed(t *testing.T) {
-	srv := httptest.NewServer(newMux(newJobBoard()))
+	srv := httptest.NewServer(newMux(newJobBoard(), nil))
 	defer srv.Close()
 	for _, bad := range []string{"/api/status", "/ui/index.html", "/ui/../go.mod"} {
 		resp, err := http.Get(srv.URL + bad)
