@@ -3,7 +3,7 @@
   "name": "Better Cores",
   "version": "0.4.0",
   "apiVersion": "1",
-  "description": "Keeps the tunnel cores of the panel up to date and carries the WARP engine other plugins build on. Once a day (and on a button) it looks for a newer release of OpenFlux, mieru and TrustTunnel, shows it on the panel's Settings → Cores page and installs it in place of the panel's own copy when you press Update; after a panel update it puts the same release back. The WARP engine is an AmneziaWG client in the plugin that checks a Cloudflare WARP account and endpoint through a real tunnel and scans Cloudflare's endpoints for the quickest; Better WARP requires it.",
+  "description": "Keeps the panel's tunnel cores up to date from Settings → Cores: once a day (and on a button) it looks for a newer OpenFlux, mieru or TrustTunnel, installs it in place of the panel's copy when you press Update, and puts it back after a panel update. Also the WARP engine (AmneziaWG check and endpoint scanner) that Better WARP requires.",
   "author": "AllIsA1",
   "license": "MIT",
   "type": "process",
